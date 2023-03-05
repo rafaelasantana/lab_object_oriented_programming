@@ -4,13 +4,21 @@
 class World {
     public:
         World(int dimension);
+        void add_character();
+        void add_enemy();
         void print_world();
-        void uncover_field(Character* c);
-        void check_character(Character* c);
+        bool character_is_alive();
+        void move_character(char direction);
     private:
         int dimension;
         int** fields;
         int relics;
+        Character* player;
+        Character* enemy;
         int generate_random_field();
         void clear_field(int x, int y);
+        void uncover_field(Character* c);
+        void check_character(Character* c);
+        void move_enemy();
+        void kill_player();
 };

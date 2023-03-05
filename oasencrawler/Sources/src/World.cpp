@@ -1,16 +1,16 @@
 // implements the class World
 #include <iostream>
 #include "World.h"
-//#include "Character.cpp"
 using namespace std;
 
 // constructor
 World::World(int dimension) {
+    this->relics = 0;
 
     // create two-dimensional array with dimension x dimension
     this->dimension = dimension;
     this->fields = new int*[dimension];
-    this->relics = 0;
+
     for(int i = 0; i < dimension; i++) {
         fields[i] = new int[dimension];
     }
@@ -47,9 +47,58 @@ int World::generate_random_field() {
     return field_value;
 }
 
+// creates a new character
+void World::add_character() {
+    Character* c = new Character(this->dimension);
+    this->player = c;
+}
+
+// adds a new enemy
+void World::add_enemy() {
+    Character* enemy = new Character(this->dimension, true);
+    this->enemy = enemy;
+}
+
+// moves the enemy in a random direction, checks if it has found the player and prints the enemy's position
+void World::move_enemy() {
+    this->enemy->move_enemy();
+    int* enemy_pos = this->enemy->get_position();
+    int* character_pos = this->player->get_position();
+    bool comp_x = enemy_pos[0] == character_pos[0];
+    bool comp_y = enemy_pos[1] == character_pos[1];
+
+    // kill character if the enemy has found it
+    if (comp_x && comp_y) {
+        kill_player();
+        cout << "The enemy has found you! You LOSE!" << endl;
+    }
+    // print position
+    this->enemy->print_enemy();
+}
+
+// kills the character
+void World::kill_player() {
+    this->player->kill_character();
+}
+
+// moves the player to the new field, uncovers the field and checks on the character's status. Then, moves the enemy
+void World::move_character(char direction) {
+    this->player->move(direction);
+    // uncover the field reached by the character
+    uncover_field(this->player);
+    // checks on the character's life points and relics
+    check_character(this->player);
+    // move enemy
+    move_enemy();
+}
+
+// returns if the player is alive
+bool World::character_is_alive() {
+    return this->player->is_alive();
+}
+
 // prints the world fields
 void World::print_world() {
-
     int** fields = this->fields;
     int dimension = this->dimension;
 
@@ -109,7 +158,6 @@ void World::uncover_field(Character* c) {
 void World::clear_field(int x, int y) {
     this->fields[x][y] = 0;
 };
-
 
 // checks on the character's life points and relics points
 void World::check_character(Character* c) {
