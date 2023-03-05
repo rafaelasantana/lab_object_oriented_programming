@@ -21,9 +21,9 @@ int main() {
             // move character
             c.move(next_move);
             // uncover the field reached by the character
-            w.uncover_field(c);
+            w.uncover_field(&c);
             // checks on the character's life points and relics
-            w.check_character(c);
+            w.check_character(&c);
         }
         // exit game
         if (next_move == 'x') {

@@ -61,16 +61,12 @@ void Character::lose_life() {
 
 // character wins a life point
 void Character::win_life() {
-    cout << "before winning a life = " << this->life_points << endl;
     this->life_points = this->life_points + 1;
-    cout << "after winning a life = " << this->life_points << endl;
 };
 
 // character wins a relic
 void Character::win_relic() {
-    cout << "before winning a relic = " << this->relics_points << endl;
     this->relics_points = this->relics_points + 1;
-    cout << "after winning a relic = " << this->relics_points << endl;
 };
 
 // returns the current life points
@@ -91,8 +87,8 @@ bool Character::is_alive() {
 // prints the character's position, life- and relics-points
 void Character::print_character() {
     cout << "____________________" << endl;
-    cout << "Life points: " << this->life_points << endl;
-    cout << "Relics points: " << this->relics_points << endl;
+    cout << "Life points: " << this->get_life_points() << endl;
+    cout << "Relics points: " << this->get_relics_points() << endl;
     cout << "Position [ " << this->x << " , " << this->y << " ]" << endl;
     cout << "____________________" << endl;
 }
