@@ -2,7 +2,7 @@
 #include "World.cpp"
 
 bool validated_input(char input) {
-    return (input == 'a' || input == 's' || input == 'd' || input == 'w' ) ? true : false;
+    return (input == 'a' || input == 's' || input == 'd' || input == 'w' || input == 'x') ? true : false;
 }
 
 int main() {

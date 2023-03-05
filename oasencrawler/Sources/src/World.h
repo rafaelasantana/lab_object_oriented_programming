@@ -21,4 +21,5 @@ class World {
         void check_character(Character* c);
         void move_enemy();
         void kill_player();
+        void fill_world();
 };

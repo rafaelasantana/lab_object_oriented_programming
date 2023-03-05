@@ -7,7 +7,7 @@ using namespace std;
 World::World(int dimension) {
     this->relics = 0;
 
-    // create two-dimensional array with dimension x dimension
+    // create empty two-dimensional array with dimension x dimension
     this->dimension = dimension;
     this->fields = new int*[dimension];
 
@@ -15,17 +15,33 @@ World::World(int dimension) {
         fields[i] = new int[dimension];
     }
 
-    // TODO: make sure there is at least one relic!
+    // fill the world with random fields
+    fill_world();
+};
+
+// fills the world with random fields (and with at least one relic)
+void World::fill_world() {
+    int relic_counter = 0;
+
     // fill array with field types
     for(int i = 0; i < dimension; i++) {
-        int* row = fields[i];
+        int* row = this->fields[i];
 
         for(int j = 0; j < dimension; j++) {
             int field_value = generate_random_field();
+            // check if a relic was added
+            if (field_value == 3) {
+                relic_counter++;
+            }
+            // hard insert a relic in case there is none yet
+            if (i == dimension - 1 && j == dimension - 1 && relic_counter == 0) {
+                field_value = 3;
+            }
             row[j] = field_value;
         }
     }
-};
+
+}
 
 // generates a random field of Empty, Danger, Well or Relics
 int World::generate_random_field() {
