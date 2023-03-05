@@ -5,6 +5,7 @@ using namespace std;
 
 // constructor
 World::World(int dimension) {
+    this->difficulty_level = 0;
     this->relics = 0;
 
     // create empty two-dimensional array with dimension x dimension
@@ -16,11 +17,12 @@ World::World(int dimension) {
     }
 
     // fill the world with random fields
-    fill_world();
+    fill_world(difficulty_level);
 };
 
 // fills the world with random fields (and with at least one relic)
-void World::fill_world() {
+// the bigger the difficulty, the more enemies
+void World::fill_world(int difficulty) {
     int relic_counter = 0;
 
     // fill array with field types
@@ -28,7 +30,7 @@ void World::fill_world() {
         int* row = this->fields[i];
 
         for(int j = 0; j < dimension; j++) {
-            int field_value = generate_random_field();
+            int field_value = generate_random_field(difficulty);
             // check if a relic was added
             if (field_value == 3) {
                 relic_counter++;
@@ -44,13 +46,13 @@ void World::fill_world() {
 }
 
 // generates a random field of Empty, Danger, Well or Relics
-int World::generate_random_field() {
+int World::generate_random_field(int difficulty) {
     int random = rand() % 10; // random int from 0-9
     int field_value;
-    if (random >= 0 && random < 4) {
+    if (random >= 0 && random < (4 - difficulty)) {
         field_value = 0; // empty field with probability 4/10
     }
-    else if (random >= 4 && random < 8) {
+    else if (random >= (4 - difficulty) && random < 8) {
         field_value = 1; // danger field with probability 4/10
     }
     else if (random == 8) {
@@ -86,7 +88,7 @@ void World::move_enemy() {
     // kill character if the enemy has found it
     if (comp_x && comp_y) {
         kill_player();
-        cout << "The enemy has found you! You LOSE!" << endl;
+        cout << "*** The enemy has found you! You LOSE! ***" << endl;
     }
     // print position
     this->enemy->print_enemy();
@@ -175,14 +177,18 @@ void World::clear_field(int x, int y) {
     this->fields[x][y] = 0;
 };
 
-// checks on the character's life points and relics points
+// checks on the character's life points and relics points. If it has found all relics,
+// fill the world again with new fields an a higher difficulty level
 void World::check_character(Character* c) {
     if (c->is_alive()) {
         if (c->get_relics_points() == relics) {
-            cout << "You have found all the relics in this world! You WIN!" << endl;
+            cout << "*** You have found all the relics in this world!! ***" << endl;
+            cout << "Welcome to the next level!" << endl;
+            this->difficulty_level = difficulty_level + 1;
+            fill_world(this->difficulty_level);
         }
     }
     else {
-        cout << "You DIE :(" << endl;
+        cout << "*** You LOSE ***" << endl;
     }
 }
