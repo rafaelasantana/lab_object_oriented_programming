@@ -9,6 +9,7 @@ class World {
         void print_world();
         bool character_is_alive();
         void move_character(char direction);
+        ~World();
     private:
         int difficulty_level;
         int dimension;

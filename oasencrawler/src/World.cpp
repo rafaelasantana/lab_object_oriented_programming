@@ -135,6 +135,7 @@ void World::uncover_field(Character* c) {
     int* position = c->get_position();
     int x = position[0];
     int y = position[1];
+    delete[]position;
     int field = fields[x][y];
 
     switch (field) {
@@ -147,29 +148,30 @@ void World::uncover_field(Character* c) {
         if (danger == 0) {
             cout << "You reached a dangerous field and got hurt! You lose 1 life point." << endl;
             c->lose_life();
-            clear_field(x, y);
+            //clear_field(x, y);
         }
         else {
             cout << "You reached a dangerous field, but were not attacked." << endl;
-            clear_field(x, y);
+            //clear_field(x, y);
         }
         break;
     }
     case 2: { // well field -> character wins a life point
         cout << "You reached a well and got an extra life!" << endl;
         c->win_life();
-        clear_field(x, y);
+        //clear_field(x, y);
         break;
     }
     case 3: { // relics field -> character wins a relic
         cout << "You found a relic!" << endl;
         c->win_relic();
-        clear_field(x, y);
+        //clear_field(x, y);
         break;
     }
     default:
         break;
     }
+    clear_field(x, y);
 }
 
 // marks an uncovered field as empty
@@ -191,4 +193,10 @@ void World::check_character(Character* c) {
     else {
         cout << "*** You LOSE ***" << endl;
     }
+}
+
+World::~World() {
+    delete fields;
+    delete player;
+    delete enemy;
 }

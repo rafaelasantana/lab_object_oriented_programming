@@ -9,7 +9,7 @@ int main() {
     int world_dimension = 5;
     World w(world_dimension); // create new world with dimension 5x5
     w.add_character(); // add character to the game
-    w.add_enemy();
+    w.add_enemy(); // add enemy
 
     while (w.character_is_alive()) {
 
