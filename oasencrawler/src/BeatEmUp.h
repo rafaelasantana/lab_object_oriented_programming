@@ -8,6 +8,7 @@ class BeatEmUp {
         bool is_on();
     private:
         Fighter player;
+        Fighter opponent;
         bool is_active;
         bool validated_fighter_option(int option);
         list<Fighter> fighters;
@@ -17,8 +18,8 @@ class BeatEmUp {
         Skill get_skill(int index);
         Fighter get_fighter(int index);
         void print_fighters();
-        void set_fighter_for_player();
+        void set_fighter(int role);
         void print_fighter_options();
-        void set_fighters_skills();
-        void create_new_fighter();
+        void set_fighters_skills(int role);
+        void create_new_fighter(int role);
 };

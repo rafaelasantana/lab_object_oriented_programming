@@ -5,12 +5,18 @@ BeatEmUp::BeatEmUp() {
 
     // create pre-defined fighters
     create_ready_fighters();
-    // set the player's fighter
-    set_fighter_for_player();
+    // set the player's fighter (role = 0)
+    set_fighter(0);
+    // player chooses opponent
+    cout << "\n";
+    cout << "*** Now it's time to choose your opponent! ***" << endl;
+    cout << "\n";
+    // set the player's opponent (role = 1)
+    set_fighter(1);
 }
 
-// sets a fighter for the player and prints it in the end
-void BeatEmUp::set_fighter_for_player() {
+// sets a fighter for the player (role = 0) or opponent (role = 1)
+void BeatEmUp::set_fighter(int role) {
     int option;
     // show Fighter options
     print_fighter_options();
@@ -18,16 +24,31 @@ void BeatEmUp::set_fighter_for_player() {
     cin >> option;
     // create a new fighter for player
     if (option == 0) {
-        create_new_fighter();
+        create_new_fighter(role);
     }
-    // set player's fighter to a ready one
+    // set player's opponent to a ready one (fixing index)
     else {
-        this->player = get_fighter(option - 1);
+        if (role == 0) {
+            this->player = get_fighter(option - 1);
+        }
+        else if (role == 1) {
+            this->opponent = get_fighter(option - 1);
+        }
     }
-    cout << "\n";
-    cout << "*** This is your fighter: ***" << endl;
-    cout << "\n";
-    this->player.print_fighter();
+    // print the fighter
+    if (role == 0) {
+        cout << "\n";
+        cout << "*** This is your fighter: ***" << endl;
+        cout << "\n";
+        this->player.print_fighter();
+    }
+    else if (role == 1) {
+        cout << "\n";
+        cout << "*** This is your opponent: ***" << endl;
+        cout << "\n";
+        this->opponent.print_fighter();
+    }
+
 }
 
 // prints the fighter options and asks for the player's input
@@ -44,7 +65,15 @@ void BeatEmUp::print_fighter_options() {
 }
 
 // presents the skill options and player chooses 2 different skills for their fighter
-void BeatEmUp::set_fighters_skills() {
+void BeatEmUp::set_fighters_skills(int role) {
+    Fighter new_fighter;
+    if (role == 0) {
+        new_fighter = this->player;
+    }
+    else if (role == 1) {
+        new_fighter = this->opponent;
+    }
+
     int first_skill;
     int second_skill;
     // present available skills
@@ -62,7 +91,8 @@ void BeatEmUp::set_fighters_skills() {
     cout << "\n";
     cin >> first_skill;
     // adds skill for the player (fixing index from 1 to 0)
-    this->player.add_skill(get_skill(first_skill - 1));
+    //this->player.add_skill(get_skill(first_skill - 1));
+    new_fighter.add_skill(get_skill(first_skill - 1));
 
     // ask for the second skill
     bool are_different = false;
@@ -77,21 +107,30 @@ void BeatEmUp::set_fighters_skills() {
         }
     }
     // adds skill for the player (fixing index from 1 to 0)
-    this->player.add_skill(get_skill(second_skill - 1));
+    // this->player.add_skill(get_skill(second_skill - 1));
+    new_fighter.add_skill(get_skill(second_skill - 1));
 
     cout << "\n";
     cout << "*** Your fighter is ready! ***" << endl;
     cout << "\n";
 }
 
-void BeatEmUp::create_new_fighter() {
+// creates a new fighter for player (role = 0) or opponent (role = 1);
+void BeatEmUp::create_new_fighter(int role) {
     string name;
     cout << "\n";
     cout << "*** Let's create your Fighter! Type your name: ***" << endl;
     cout << "\n";
     cin >> name;
-    this->player = Fighter(name);
-    set_fighters_skills();
+
+    if (role == 0) {
+        this->player = Fighter(name);
+        set_fighters_skills(0);
+    }
+    else if (role == 1) {
+        this->opponent = Fighter(name);
+        set_fighters_skills(1);
+    }
 }
 
 // creates skills and adds them to the skills list
