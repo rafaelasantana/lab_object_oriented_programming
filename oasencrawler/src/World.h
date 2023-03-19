@@ -4,6 +4,7 @@
 
 class World {
     public:
+        World();
         World(int dimension);
         void add_character();
         void add_enemy();

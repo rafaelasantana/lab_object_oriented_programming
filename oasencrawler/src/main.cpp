@@ -1,7 +1,9 @@
 #include <iostream>
 #include <list>
 #include <iterator>
-#include "World.cpp"
+// #include "World.cpp"
+#include "RPG.cpp"
+#include "BeatEmUp.cpp"
 
 bool validated_input(char input) {
     return (input == 'a' || input == 's' || input == 'd' || input == 'w' || input == 'x') ? true : false;
@@ -55,34 +57,20 @@ int main() {
         if (validated_mode(mode)) {
             // start RPG Game
             if (mode == 1) {
-                cout << "Welcome to the RPG Mode!" << endl;
-                int world_dimension = 5;
-                World w(world_dimension); // create new world with dimension 5x5
-                w.add_character(); // add character to the game
-                w.add_enemy(); // add enemy
+                cout << "\n";
+                cout << "*** Welcome to the RPG Mode! ***" << endl;
+                cout << "\n";
+                // create new RPG game with dimension 5x5
+                RPG game(5);
+                bool rpg_is_on = game.is_on();
 
-                while (w.character_is_alive()) {
-
-                    // ask for next direction
-                    char next_move;
-                    cout << "Choose your next move: 'w' UP, 's' DOWN, 'a' LEFT, 'd' RIGHT or 'x' to EXIT: ";
-                    cin >> next_move;
-
-                    // check user's input and move characters
-                    if (validated_input(next_move)) {
-                        // move character
-                        w.move_character(next_move);
-                    }
-                    else {
-                        cout << "Enter a valid move!" << endl;
-                    }
-
-                    // quit game
-                    if (next_move == 'x') {
-                        cout << "Exiting game... " << endl;
+                while (rpg_is_on) {
+                    if (game.is_on() == false) {
+                        rpg_is_on = false;
                         break;
                     }
                 }
+                cout << "You exited the RPG mode." << endl;
             }
             // start Beat'em up! game
             else if (mode == 2) {

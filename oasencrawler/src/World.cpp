@@ -3,7 +3,9 @@
 #include "World.h"
 using namespace std;
 
-// constructor
+World::World() {}
+
+// creates a world with this dimension
 World::World(int dimension) {
     this->difficulty_level = 0;
     this->relics = 0;
