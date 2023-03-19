@@ -1,10 +1,10 @@
 // implements the class Fighter
 #include "Fighter.h"
 #include <iostream>
+#include <list>
 using namespace std;
 
-int x, y, x_max, y_max;
-Skill* skills;
+list<Skill> skills;
 
 // creates a new fighter and sets it in a random starting position
 Fighter::Fighter(int world_dimension) {
@@ -15,6 +15,16 @@ Fighter::Fighter(int world_dimension) {
     this->x = starting_point[0];
     this->y = starting_point[1];
     delete starting_point;
+}
+
+// adds skill to the skills list
+void Fighter::add_skill(Skill skill) {
+    this->skills.push_front(skill);
+}
+
+// returns the skills list
+list<Skill> Fighter::get_skills() {
+    return this->skills;
 }
 
 // moves the fighter in a given direction
@@ -107,12 +117,11 @@ int* Fighter::get_position() {
     return position;
 }
 
+// deletes heap allocated items
 Fighter::~Fighter() {
-    // delete skills;
-    // TODO: not working, why?
-    //delete position;
+    delete this->position;
 };
-//TODO
+
 int Fighter::fight(const Fighter& other) {
     return 0;
 };
