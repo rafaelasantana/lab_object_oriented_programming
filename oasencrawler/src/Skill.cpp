@@ -1,10 +1,10 @@
 // implements the class Skill
 #include "Skill.h"
-#include <iostream>
-#include <string>
+// #include <iostream>
+// #include <string>
 
-int recovery_points;
-int attack_points;
+// int recovery_points;
+// int attack_points;
 
 Skill::Skill(string name, int recovery_points, int attack_points) {
     this->name = name;
@@ -42,5 +42,5 @@ int Skill::fight(Skill* other_skill) {
 
 // prints this skill
 void Skill::print() {
-    cout << "*** " << this->name << " | Attack: " << this->attack_points << " | Recovery: " << this->recovery_points << " ***" << endl;
+    cout << "Skill: " << this->name << " | Attack: " << this->attack_points << " | Recovery: " << this->recovery_points << endl;
 }

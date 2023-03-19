@@ -6,6 +6,8 @@
 
 class Fighter {
     public:
+        Fighter();
+        Fighter(string name);
         Fighter(int world_dimension);
         void move(char direction);
         void move();
@@ -14,11 +16,13 @@ class Fighter {
         virtual ~Fighter();
         int fight(const Fighter& other);
         virtual void print();
+        void print_fighter();
         void add_skill(Skill new_skill);
         list<Skill> get_skills();
     protected:
-        int x, y, x_max, y_max, world_dimension;
+        int x, y, x_max, y_max, world_dimension, life_points;
         list<Skill> skills;
-        int* position;
+        Skill get_skill(int index);
         void print_error_field_limit();
+        string name;
 };

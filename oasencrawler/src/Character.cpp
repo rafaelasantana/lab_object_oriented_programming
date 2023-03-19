@@ -3,7 +3,8 @@
 #include <iostream>
 using namespace std;
 
-// void print_error_field_limit();
+// defining default constructor
+Character::Character(){}
 
 // creates a new Character and sets it in a random position
 Character::Character(int world_dimension) : Fighter(world_dimension)

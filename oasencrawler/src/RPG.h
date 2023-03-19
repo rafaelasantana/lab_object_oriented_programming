@@ -5,7 +5,6 @@ class RPG{
     public:
         RPG(int dimension);
         void play_game();
-        void stop_game();
         bool is_on();
         bool validated_input(char input);
     private:

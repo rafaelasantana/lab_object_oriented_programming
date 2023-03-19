@@ -40,10 +40,6 @@ void RPG::play_game() {
 }
 
 
-void RPG::stop_game() {
-
-}
-
 bool RPG::is_on() {
     return this->is_active;
 }

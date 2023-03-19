@@ -200,6 +200,7 @@ void World::check_character(Character* c) {
 }
 
 World::~World() {
+    cout << "calling World destructor" << endl;
     delete fields;
     delete player;
     delete enemy;

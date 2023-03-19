@@ -6,14 +6,26 @@ using namespace std;
 
 list<Skill> skills;
 
+// defining default constructor
+Fighter::Fighter(){
+}
+
+// creates a Fighter with a name (used for BeatEmUp)
+Fighter::Fighter(string name){
+    this->name = name;
+    this->life_points = 5;
+}
+
 // creates a new fighter and sets it in a random starting position
 Fighter::Fighter(int world_dimension) {
     this->world_dimension = world_dimension;
     this->x_max = world_dimension - 1;
     this->y_max = world_dimension - 1;
+
     int* starting_point = get_random_position();
     this->x = starting_point[0];
     this->y = starting_point[1];
+    this->life_points = 5;
     delete starting_point;
 }
 
@@ -119,7 +131,6 @@ int* Fighter::get_position() {
 
 // deletes heap allocated items
 Fighter::~Fighter() {
-    delete this->position;
 };
 
 int Fighter::fight(const Fighter& other) {
@@ -138,3 +149,25 @@ void Fighter::print() {
     cout << "____________________" << endl;
 }
 
+// prints a fighter (BeatEmUp game)
+void Fighter::print_fighter() {
+    Skill first_skill = get_skill(0);
+    Skill second_skill = get_skill(1);
+
+    // cout << "__________________________________________" << endl;
+    cout << "____________________"<< this->name << "____________________" << endl;
+    first_skill.print();
+    second_skill.print();
+    cout << "Life points: " << this->life_points << endl;
+    cout << "____________________________________________" << endl;
+}
+
+// get's this character's skill
+Skill Fighter::get_skill(int index) {
+    list<Skill>::iterator it = skills.begin();
+    for(int i=0; i < skills.size(); i++) {
+        if (i == index) return *it;
+        ++it;
+    }
+    return Skill("null skill, check your code!!", 0, 0);
+}

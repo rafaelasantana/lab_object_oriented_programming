@@ -3,6 +3,12 @@
         "iostream": "cpp",
         "__node_handle": "cpp",
         "ostream": "cpp",
-        "list": "cpp"
+        "list": "cpp",
+        "__locale": "cpp",
+        "bitset": "cpp",
+        "ios": "cpp",
+        "istream": "cpp",
+        "locale": "cpp",
+        "streambuf": "cpp"
     }
 }
