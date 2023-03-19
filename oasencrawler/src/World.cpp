@@ -73,13 +73,15 @@ void World::add_character() {
 
 // adds a new enemy
 void World::add_enemy() {
-    Character* enemy = new Character(this->dimension, true);
-    this->enemy = enemy;
+    this->enemy = new Fighter(this->dimension);
+    // Character* enemy = new Character(this->dimension, true);
+    // this->enemy = enemy;
 }
 
 // moves the enemy in a random direction, checks if it has found the player and prints the enemy's position
 void World::move_enemy() {
-    this->enemy->move_enemy();
+    // this->enemy->move_enemy();
+    this->enemy->move();
     int* enemy_pos = this->enemy->get_position();
     int* character_pos = this->player->get_position();
     bool comp_x = enemy_pos[0] == character_pos[0];
@@ -91,7 +93,7 @@ void World::move_enemy() {
         cout << "*** The enemy has found you! You LOSE! ***" << endl;
     }
     // print position
-    this->enemy->print_enemy();
+    this->enemy->print();
 }
 
 // kills the character

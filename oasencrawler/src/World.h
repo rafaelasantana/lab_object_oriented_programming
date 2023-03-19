@@ -1,5 +1,6 @@
 // defines the class World
 #include "Character.cpp"
+// #include "Character.h"
 
 class World {
     public:
@@ -16,7 +17,7 @@ class World {
         int** fields;
         int relics;
         Character* player;
-        Character* enemy;
+        Fighter* enemy;
         int generate_random_field(int difficulty);
         void clear_field(int x, int y);
         void uncover_field(Character* c);
