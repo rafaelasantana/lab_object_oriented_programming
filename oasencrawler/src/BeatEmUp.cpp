@@ -219,6 +219,20 @@ Fighter BeatEmUp::get_fighter(int index) {
     return Fighter("null fighter, check your code!");
 }
 
+//pops the fighter with this name from the fighter's list
+void BeatEmUp::pop_fighter(string name) {
+    list<Fighter>::iterator it = fighters.begin();
+    for(int i=0; i < fighters.size(); i++) {
+        Fighter curr = *it;
+        // curr fighter has the same name
+        if (!curr.get_name().compare(name)) {
+            fighters.remove(curr);
+            break;
+        }
+        ++it;
+    }
+}
+
 // plays the game or exits upon user request
 void BeatEmUp::play_game() {
 
@@ -338,13 +352,27 @@ void BeatEmUp::fight() {
         this->player.add_defeat();
         champion = this->opponent;
     }
+
+
     // restore life points from fighters
     this->player.restore_life_points();
     this->opponent.restore_life_points();
+
+    // delete old version of the fighters from the list
+    pop_fighter(this->player.get_name());
+    pop_fighter(this->opponent.get_name());
+
+    // insert fighters back to the list, now with updated qualities
+    fighters.push_front(this->player);
+    fighters.push_front(this->opponent);
+
     // print winner
     cout << "\n";
     cout << "*** " << champion.get_name() << " IS THE WINNER! ***" << endl;
     cout << "\n";
+
+    // print fighters
+    print_fighters();
 }
 
 // validates input to start the game

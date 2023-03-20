@@ -7,10 +7,11 @@ class BeatEmUp {
         void play_game();
         bool is_on();
     private:
-        // Fighter player;
-        // Fighter opponent;
         Fighter player;
         Fighter opponent;
+        // TODO: implement with Character
+        // Character player;
+        // Character opponent;
         bool is_active;
         bool validated_fighter_option(int option);
         list<Fighter> fighters;
@@ -26,4 +27,5 @@ class BeatEmUp {
         void set_fighters_skills(int role);
         void create_new_fighter(int role);
         bool validated_input_to_start(int input);
+        void pop_fighter(string name);
 };

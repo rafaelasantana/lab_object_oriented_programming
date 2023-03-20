@@ -26,6 +26,8 @@ class Fighter {
         void restore_life_points();
         Skill get_random_skill();
         string get_name();
+        bool operator == (const Fighter& f) const { return name == f.name; }
+        bool operator != (const Fighter& f) const { return !operator==(f); }
     protected:
         string name;
         int x, y, x_max, y_max, world_dimension, life_points;

@@ -180,6 +180,7 @@ Skill Fighter::get_skill(int index) {
 void Fighter::add_victory() {
     this->victories = victories + 1;
 }
+
 // adds one defeat to fighter
 void Fighter::add_defeat() {
     this->defeats = defeats + 1;
