@@ -5,19 +5,10 @@ BeatEmUp::BeatEmUp() {
 
     // create pre-defined fighters
     create_ready_fighters();
-    // set the player's fighter (role = 0)
-    set_fighter(0);
-    // player chooses opponent
-    cout << "\n";
-    cout << "*** Now it's time to choose your opponent! ***" << endl;
-    cout << "\n";
-    // set the player's opponent (role = 1)
-    set_fighter(1);
-    // fight player x opponent until one loses
-    Fighter winner = fight();
-    // store fight results (see wins and losts of all characters)
-    // after fight is over, give option to start another fight
 
+    // start game
+    this->is_active = true;
+    play_game();
 }
 
 // sets a fighter for the player (role = 0) or opponent (role = 1)
@@ -46,30 +37,44 @@ void BeatEmUp::set_fighter(int role) {
         cout << "*** This is your fighter: ***" << endl;
         cout << "\n";
         this->player.print_fighter();
+        if (option == 0) {
+            fighters.push_back(this->player);
+        }
     }
+    // print the opponent
     else if (role == 1) {
         cout << "\n";
         cout << "*** This is your opponent: ***" << endl;
         cout << "\n";
         this->opponent.print_fighter();
+        if (option == 0) {
+            fighters.push_back(this->opponent);
+        }
     }
-
 }
 
 // prints the fighter options and asks for the player's input
 void BeatEmUp::print_fighter_options() {
     cout << "*** Meet our Fighters! ***" << endl;
     cout << "\n";
+    string options = "(";
     for (int i = 0; i < fighters.size(); i++) {
         cout << "                * OPTION " << i + 1 <<  ": *" << endl;
         get_fighter(i).print_fighter();
+        if (i == fighters.size() - 1) {
+            options = options + to_string(i + 1) + ")";
+        }
+        else {
+            options = options + to_string(i + 1) + ", ";
+
+        }
     }
     cout << "\n";
-    cout << "*** Choose your option (1, 2, 3, 4) or 0 to create a new fighter! ***" << endl;
+    cout << "*** Choose your option " << options <<" or 0 to create a new fighter! ***" << endl;
     cout << "\n";
 }
 
-// presents the skill options and player chooses 2 different skills for their fighter
+// presents the skill options and player chooses 2 different skills for their new fighter
 void BeatEmUp::set_fighters_skills(int role) {
     Fighter new_fighter;
     if (role == 0) {
@@ -95,6 +100,7 @@ void BeatEmUp::set_fighters_skills(int role) {
     cout << "*** Choose your first skill (1, 2, 3, 4, 5): ***" << endl;
     cout << "\n";
     cin >> first_skill;
+
     // adds skill for the fighter (fixing index from 1 to 0)
     new_fighter.add_skill(get_skill(first_skill - 1));
 
@@ -116,24 +122,32 @@ void BeatEmUp::set_fighters_skills(int role) {
     cout << "\n";
     cout << "*** Your fighter is ready! ***" << endl;
     cout << "\n";
+
+    if (role == 0) {
+        this->player = new_fighter;
+    }
+    else if (role == 1) {
+        this->opponent = new_fighter;
+    }
 }
 
-// creates a new fighter for player (role = 0) or opponent (role = 1);
+// creates a new fighter for player (role = 0) or opponent (role = 1) and adds it to the fighters list
 void BeatEmUp::create_new_fighter(int role) {
     string name;
     cout << "\n";
     cout << "*** Let's create your Fighter! Type your name: ***" << endl;
     cout << "\n";
     cin >> name;
+    Fighter new_fighter = Fighter(name);
 
     // set new fighter to the player
     if (role == 0) {
-        this->player = Fighter(name);
+        this->player = new_fighter;
         set_fighters_skills(0);
     }
     // set new fighter to the opponent
     else if (role == 1) {
-        this->opponent = Fighter(name);
+        this->opponent = new_fighter;
         set_fighters_skills(1);
     }
 }
@@ -205,9 +219,50 @@ Fighter BeatEmUp::get_fighter(int index) {
     return Fighter("null fighter, check your code!");
 }
 
+// plays the game or exits upon user request
 void BeatEmUp::play_game() {
+
+    while (is_active) {
+        int input;
+        cout << "\n";
+        cout << "*** Choose (1) to start a REAL FIGHT or (0) to exit the game ***" << endl;
+        cout << "\n";
+        cin >> input;
+        // check if input is valid
+        if (validated_input_to_start(input)) {
+            // start game
+            if (input == 1) {
+                 // set the player's fighter (role = 0)
+                set_fighter(0);
+                // player chooses opponent
+                cout << "\n";
+                cout << "*** Now it's time to choose your opponent! ***" << endl;
+                cout << "\n";
+                // set the player's opponent (role = 1)
+                set_fighter(1);
+                // fight player x opponent until one loses
+                fight();
+                // store fight results (see wins and losts of all characters)
+                //print_fighter_options();
+                // after fight is over, give option to start another fight
+            }
+            else {
+                is_active = false;
+                break;
+            }
+        }
+        else {
+            cout << "\n";
+            cout << "*** Enter a valid option! ***" << endl;
+            cout << "\n";
+        }
+    }
+    cout << "\n";
+    cout << "*** You exited the BeatEmUp mode ***" << endl;
+    cout << "\n";
 }
 
+// returns if this game is active
 bool BeatEmUp::is_on() {
     return this->is_active;
 }
@@ -226,8 +281,8 @@ void BeatEmUp::print_fighters() {
     }
 }
 
-// player fights the opponent. Returns the winner
-Fighter BeatEmUp::fight() {
+// player fights the opponent
+void BeatEmUp::fight() {
 
     Fighter champion;
 
@@ -283,9 +338,16 @@ Fighter BeatEmUp::fight() {
         this->player.add_defeat();
         champion = this->opponent;
     }
+    // restore life points from fighters
+    this->player.restore_life_points();
+    this->opponent.restore_life_points();
+    // print winner
     cout << "\n";
     cout << "*** " << champion.get_name() << " IS THE WINNER! ***" << endl;
     cout << "\n";
-    return champion;
+}
 
+// validates input to start the game
+bool BeatEmUp::validated_input_to_start(int input) {
+    return (input == 0 || input == 1) ? true : false;
 }

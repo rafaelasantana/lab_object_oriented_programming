@@ -23,6 +23,7 @@ class Fighter {
         void add_defeat();
         void lose_life();
         bool is_alive();
+        void restore_life_points();
         Skill get_random_skill();
         string get_name();
     protected:

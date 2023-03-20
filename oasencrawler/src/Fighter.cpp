@@ -161,6 +161,8 @@ void Fighter::print_fighter() {
     first_skill.print();
     second_skill.print();
     cout << "Life points: " << this->life_points << endl;
+    cout << "Victories: " << this->victories << endl;
+    cout << "Defeats: " << this->defeats << endl;
     cout << "____________________________________________" << endl;
 }
 
@@ -176,16 +178,16 @@ Skill Fighter::get_skill(int index) {
 
 // adds one victory to fighter
 void Fighter::add_victory() {
-    this->victories++;
+    this->victories = victories + 1;
 }
 // adds one defeat to fighter
 void Fighter::add_defeat() {
-    this->defeats++;
+    this->defeats = defeats + 1;
 }
 
 // fighter loses a life
 void Fighter::lose_life() {
-    this->life_points--;
+    this->life_points = life_points - 1;
 }
 
 // returns 1 if the fighter has at least one life point
@@ -202,5 +204,10 @@ Skill Fighter::get_random_skill() {
 // returns this fighter's name
 string Fighter::get_name() {
     return this->name;
+}
+
+// restores the life points for this fighter
+void Fighter::restore_life_points() {
+    this->life_points = 5;
 }
 

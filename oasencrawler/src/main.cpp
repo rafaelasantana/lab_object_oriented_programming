@@ -46,13 +46,11 @@ int main() {
                 bool fight_is_on = game.is_on();
                 // play BeatEmUp game
                 while (fight_is_on) {
-                    cout << "Entered the loop" << endl;
                     if (game.is_on() == false) {
                         fight_is_on = false;
                         break;
                     }
                 }
-                cout << "You exited the BeatEmUp mode." << endl;
             }
             // exit
             else {

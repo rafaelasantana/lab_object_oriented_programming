@@ -6,6 +6,9 @@ using namespace std;
 // defining default constructor
 Character::Character(){}
 
+// creates a new character with a name
+Character::Character(string name) : Fighter(name){}
+
 // creates a new Character and sets it in a random position
 Character::Character(int world_dimension) : Fighter(world_dimension)
 {

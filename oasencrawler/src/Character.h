@@ -5,6 +5,7 @@
 class Character: public Fighter {
     public:
         Character();
+        Character(string name);
         Character(int world_dimension);
         void print();
         void move(char direction);
