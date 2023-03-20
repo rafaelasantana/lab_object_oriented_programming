@@ -9,7 +9,7 @@ class Skill {
         // Skill* get_skill();
         int get_recovery_points();
         int get_attack_points();
-        int fight(Skill* other);
+        int fight(Skill other);
         void print();
     private:
         string name;

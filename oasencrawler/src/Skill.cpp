@@ -21,9 +21,9 @@ int Skill::get_attack_points() {
 }
 
 // returns 1 if this skill wins, 0 if it's a draw, or -1 if this skill loses
-int Skill::fight(Skill* other_skill) {
-    int other_recovery = other_skill->get_recovery_points();
-    int other_attack = other_skill->get_attack_points();
+int Skill::fight(Skill other_skill) {
+    int other_recovery = other_skill.get_recovery_points();
+    int other_attack = other_skill.get_attack_points();
 
     int diff_attack = attack_points - other_attack;
 

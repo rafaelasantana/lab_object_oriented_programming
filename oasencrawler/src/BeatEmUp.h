@@ -13,6 +13,7 @@ class BeatEmUp {
         bool validated_fighter_option(int option);
         list<Fighter> fighters;
         list<Skill> skills;
+        Fighter fight();
         void create_ready_fighters();
         void create_skills();
         Skill get_skill(int index);

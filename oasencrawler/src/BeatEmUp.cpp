@@ -13,6 +13,11 @@ BeatEmUp::BeatEmUp() {
     cout << "\n";
     // set the player's opponent (role = 1)
     set_fighter(1);
+    // fight player x opponent until one loses
+    Fighter winner = fight();
+    // store fight results (see wins and losts of all characters)
+    // after fight is over, give option to start another fight
+
 }
 
 // sets a fighter for the player (role = 0) or opponent (role = 1)
@@ -22,11 +27,11 @@ void BeatEmUp::set_fighter(int role) {
     print_fighter_options();
     // get player's input
     cin >> option;
-    // create a new fighter for player
+    // create a new fighter for the role
     if (option == 0) {
         create_new_fighter(role);
     }
-    // set player's opponent to a ready one (fixing index)
+    // set fighter to a ready one (fixing index)
     else {
         if (role == 0) {
             this->player = get_fighter(option - 1);
@@ -90,8 +95,7 @@ void BeatEmUp::set_fighters_skills(int role) {
     cout << "*** Choose your first skill (1, 2, 3, 4, 5): ***" << endl;
     cout << "\n";
     cin >> first_skill;
-    // adds skill for the player (fixing index from 1 to 0)
-    //this->player.add_skill(get_skill(first_skill - 1));
+    // adds skill for the fighter (fixing index from 1 to 0)
     new_fighter.add_skill(get_skill(first_skill - 1));
 
     // ask for the second skill
@@ -106,8 +110,7 @@ void BeatEmUp::set_fighters_skills(int role) {
             break;
         }
     }
-    // adds skill for the player (fixing index from 1 to 0)
-    // this->player.add_skill(get_skill(second_skill - 1));
+    // adds skill for the fighter (fixing index from 1 to 0)
     new_fighter.add_skill(get_skill(second_skill - 1));
 
     cout << "\n";
@@ -123,10 +126,12 @@ void BeatEmUp::create_new_fighter(int role) {
     cout << "\n";
     cin >> name;
 
+    // set new fighter to the player
     if (role == 0) {
         this->player = Fighter(name);
         set_fighters_skills(0);
     }
+    // set new fighter to the opponent
     else if (role == 1) {
         this->opponent = Fighter(name);
         set_fighters_skills(1);
@@ -136,11 +141,11 @@ void BeatEmUp::create_new_fighter(int role) {
 // creates skills and adds them to the skills list
 void BeatEmUp::create_skills() {
     // create the skills
-    Skill tailspin("Tailspin", 5, 5);
+    Skill tailspin("Tailspin", 5, 7);
     Skill skyrocket("Skyrocket", 0, 10);
-    Skill barrel_roll("Barrel Roll", 3, 7);
-    Skill wingman("Wingman", 8, 2);
-    Skill dog_fight("Dog Fight", 7, 3);
+    Skill barrel_roll("Barrel Roll", 5, 7);
+    Skill wingman("Wingman", 8, 1);
+    Skill dog_fight("Dog Fight", 7, 1);
 
     // add to skills list
     this->skills.push_front(tailspin);
@@ -219,5 +224,68 @@ void BeatEmUp::print_fighters() {
         current.print_fighter();
         ++it;
     }
+}
+
+// player fights the opponent. Returns the winner
+Fighter BeatEmUp::fight() {
+
+    Fighter champion;
+
+    // skills fight as long as both fighters are alive
+    while (player.is_alive() && opponent.is_alive()) {
+
+        // get a random skill for fighters
+        Skill player_skill = this->player.get_random_skill();
+        Skill opponent_skill = this->opponent.get_random_skill();
+
+        cout << "\n";
+        cout << this->player.get_name() << " fights with ";
+        player_skill.print();
+        cout << this->opponent.get_name() << " fights with ";
+        opponent_skill.print();
+        cout << "\n";
+
+        // skills fight
+        int result = player_skill.fight(opponent_skill);
+
+        // player wins
+        if (result == 1) {
+            this->opponent.lose_life();
+            cout << "\n";
+            cout << "*** " << this->player.get_name() << " wins this round! ***" << endl;
+            cout << "\n";
+        }
+        // opponent wins
+        else if (result == -1) {
+            this->player.lose_life();
+            cout << "\n";
+            cout << "*** " << this->opponent.get_name() << " wins this round! ***" << endl;
+            cout << "\n";
+        }
+        // it's a draw, both lose a life point
+        else {
+            cout << "\n";
+            cout << "*** TOUGH FIGHT! It's a tie and both fighters lose a life! ***" << endl;
+            cout << "\n";
+            this->player.lose_life();
+            this->opponent.lose_life();
+        }
+    }
+    // player won
+    if (this->player.is_alive()) {
+        this->player.add_victory();
+        this->opponent.add_defeat();
+        champion = this->player;
+    }
+    // opponent won
+    else {
+        this->opponent.add_victory();
+        this->player.add_defeat();
+        champion = this->opponent;
+    }
+    cout << "\n";
+    cout << "*** " << champion.get_name() << " IS THE WINNER! ***" << endl;
+    cout << "\n";
+    return champion;
 
 }

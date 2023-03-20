@@ -14,6 +14,8 @@ Fighter::Fighter(){
 Fighter::Fighter(string name){
     this->name = name;
     this->life_points = 5;
+    this->victories = 0;
+    this->defeats = 0;
 }
 
 // creates a new fighter and sets it in a random starting position
@@ -171,3 +173,34 @@ Skill Fighter::get_skill(int index) {
     }
     return Skill("null skill, check your code!!", 0, 0);
 }
+
+// adds one victory to fighter
+void Fighter::add_victory() {
+    this->victories++;
+}
+// adds one defeat to fighter
+void Fighter::add_defeat() {
+    this->defeats++;
+}
+
+// fighter loses a life
+void Fighter::lose_life() {
+    this->life_points--;
+}
+
+// returns 1 if the fighter has at least one life point
+bool Fighter::is_alive() {
+    return (this->life_points > 0) ? true : false;
+}
+
+// returns a random skill for this fighter
+Skill Fighter::get_random_skill() {
+    int random_index = rand() % skills.size();
+    return get_skill(random_index);
+}
+
+// returns this fighter's name
+string Fighter::get_name() {
+    return this->name;
+}
+
