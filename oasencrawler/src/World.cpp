@@ -3,6 +3,7 @@
 #include "World.h"
 using namespace std;
 
+// define default constructor
 World::World() {}
 
 // creates a world with this dimension
@@ -199,6 +200,7 @@ void World::check_character(Character* c) {
     }
 }
 
+// deletes heap allocated items from this world
 World::~World() {
     cout << "calling World destructor" << endl;
     delete fields;

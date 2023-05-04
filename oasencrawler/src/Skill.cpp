@@ -1,21 +1,19 @@
 // implements the class Skill
 #include "Skill.h"
-// #include <iostream>
-// #include <string>
 
-// int recovery_points;
-// int attack_points;
-
+// creates a new Skill
 Skill::Skill(string name, int recovery_points, int attack_points) {
     this->name = name;
     this->recovery_points = recovery_points;
     this->attack_points = attack_points;
 }
 
+// returns the recovery points in this skill
 int Skill::get_recovery_points() {
     return recovery_points;
 }
 
+// returns the attack points in this skill
 int Skill::get_attack_points() {
     return attack_points;
 }

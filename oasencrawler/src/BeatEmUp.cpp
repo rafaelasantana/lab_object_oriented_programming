@@ -238,7 +238,7 @@ void BeatEmUp::play_game() {
 
     while (is_active) {
         int input;
-        cout << "\n";
+        cout << "\n"; 
         cout << "*** Choose (1) to start a REAL FIGHT or (0) to exit the game ***" << endl;
         cout << "\n";
         cin >> input;

@@ -9,7 +9,7 @@ class BeatEmUp {
     private:
         Fighter player;
         Fighter opponent;
-        // TODO: implement with Character
+        //TODO implement with Character
         // Character player;
         // Character opponent;
         bool is_active;

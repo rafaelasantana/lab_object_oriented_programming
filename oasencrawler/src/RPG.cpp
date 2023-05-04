@@ -1,5 +1,6 @@
 #include "RPG.h"
 
+// creates a new RPG game
 RPG::RPG(int dimension) {
     this->dimension = dimension;
     World new_world(dimension);
@@ -8,6 +9,7 @@ RPG::RPG(int dimension) {
     play_game();
 }
 
+// play the RPG game until the Character dies or the user asks to quit
 void RPG::play_game() {
 
     w.add_character(); // add character to the game
@@ -39,11 +41,11 @@ void RPG::play_game() {
     is_active = false;
 }
 
-
+// returns if this game is active
 bool RPG::is_on() {
     return this->is_active;
 }
-
+// validates the user input for a move
 bool RPG::validated_input(char input) {
     return (input == 'a' || input == 's' || input == 'd' || input == 'w' || input == 'x') ? true : false;
 }
