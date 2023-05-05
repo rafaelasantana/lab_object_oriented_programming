@@ -17,9 +17,6 @@ void DeepMiner::set_up_game() {
     // create a new mine for this game
     this->mine = unique_ptr<Mine> (new Mine);
 
-    // setup possible moves for this game
-    this->possible_moves = {'w', 's', 'a', 'd', 'r'};
-
     // set a robot for the player
     set_user_players();
 
@@ -31,11 +28,13 @@ void DeepMiner::set_up_game() {
 void DeepMiner::set_computer_player() {
     // get a random choice for the computer's robot
     int computer_robot_choice = (rand() % NUMBER_ROBOT_OPTIONS) + 1;
+
     // create robot for computer
     this->computers_robot = create_robot(computer_robot_choice);
+
     // create player with this robot for the computer and call it 'OPPONENT'
     shared_ptr<Player> computer_player = make_shared<Player>(this->computers_robot, mine->MAX_LENGTH_MINE, "OPPONENT");
-    // Player computer(this->computers_robot, mine->MAX_LENGTH_MINE, "OPPONENT");
+
     // set the computer player to the newly created player
     this->computer_player = computer_player;
 }
@@ -82,9 +81,10 @@ shared_ptr<IRobot>DeepMiner::create_robot(int choice) {
         case 3:
             shared_robot_pointer = make_shared<Trinocular>();
             break;
+        // if accepted invalid input, quit game and check is_valid_robot_choice function
         default:
-            cout << "\n Accepted invalid input. Quitting game...\n";
-            this->game_is_on = false;
+            cout << "\n Accepted invalid input. Check is_valid_robot_choice function\n";
+            quit_game();
             break;
     }
 
@@ -99,7 +99,7 @@ void DeepMiner::quit_game(){
 
 // destroys this DeepMiner object
 DeepMiner::~DeepMiner() {
-    cout << "\nExecuting destructor...\n";
+    cout << "\nIn DeepMiner destructor...\n";
 }
 
 // checks if the player's move is valid or if the player asked to quit ('x')
@@ -126,7 +126,7 @@ void DeepMiner::play_game() {
 
     while (this->game_is_on) {
 
-        // print mine with the user player's and the computer player's position
+        // print mine highlighting the positions from user player and computer player
         mine->print_visible_fields_with_players_position(this->user_player->get_position_pointer(), this->computer_player->get_position_pointer());
 
         // move the user player

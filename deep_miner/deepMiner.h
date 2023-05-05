@@ -10,7 +10,6 @@
 #include "player.cpp"
 
 using namespace std;
-typedef array<char, 5> moves_array;
 
 class DeepMiner {
     public:
@@ -19,7 +18,6 @@ class DeepMiner {
         ~DeepMiner();
     private:
         int NUMBER_ROBOT_OPTIONS = 3;
-        moves_array possible_moves;
         unique_ptr<Mine> mine;
         shared_ptr<IRobot> players_robot;
         shared_ptr<IRobot> computers_robot;

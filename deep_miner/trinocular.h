@@ -7,7 +7,6 @@ class Trinocular : public IRobot {
         Trinocular();
         int mine(shared_ptr<field_vector> mine_field);
         ~Trinocular();
-        shared_ptr<position_array> get_position();
         void print_robot();
     private:
         position_array position;

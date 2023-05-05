@@ -16,7 +16,6 @@ class IRobot {
 
     public:
         virtual int mine(shared_ptr<field_vector> mine_field) = 0;
-        virtual shared_ptr<position_array> get_position() = 0;
         virtual void print_robot() = 0;
     private:
 };

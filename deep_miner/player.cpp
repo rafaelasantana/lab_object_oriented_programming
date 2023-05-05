@@ -15,11 +15,6 @@ Player::Player(shared_ptr<IRobot> robot, int MAX_LENGTH_MINE, string name) {
 Player::Player() {
 }
 
-// returns the player's current position
-position_array Player::get_position() {
-    return this->position;
-}
-
 // returns the shared pointer for the player's position
 shared_ptr<position_array> Player::get_position_pointer() {
     return this->position_pointer;
@@ -40,27 +35,19 @@ int Player::get_points() {
     return this->points;
 }
 
-// adds mined points to this player's points
-void Player::win_points(int mined_points) {
-    this->points = points + mined_points;
-    cout <<"\nPlayer won " << mined_points << " points! Total Points = " << this->points;
-}
-
 // player mines this field and wins ponts. Then the current stats for this player are displayed
 void Player::mine_field_and_print_player(shared_ptr<field_vector> field) {
     // get points from the robot's mining
-    int won_points = this->robot->mine(field);
+    int mined_points = this->robot->mine(field);
 
     // add these points to the player's points
-    cout << "\nPlayer's points before mining = " << this->points << "\n";
-    this->points = this->points + won_points;
-    cout << "\nPlayer's points after mining = " << this->points << "\n";
+    this->points = points + mined_points;
 
     // print player's stats
     print_player();
 }
 
-// prints this player
+// prints this player's robot, points and position
 void Player::print_player() {
     // get player's position coordinates
     int x_position = (*this->position_pointer)[0];

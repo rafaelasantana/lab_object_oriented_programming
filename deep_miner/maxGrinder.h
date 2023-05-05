@@ -1,13 +1,12 @@
 #include "iRobot.h"
 
-// This Robot class specializes in finding the max and min values of its x- and y-coordinate.
-// It grinds the max value and leaves the min value on the top of the field.
+// This Robot class specializes in mining the max value in its x,y-coordinate
+// and then sorting the field in ascending order for the opponents.
 class MaxGrinder : public IRobot {
     public:
         MaxGrinder();
         int mine(shared_ptr<field_vector> mine_field);
         ~MaxGrinder();
-        shared_ptr<position_array> get_position();
         void print_robot();
     private:
         position_array position;

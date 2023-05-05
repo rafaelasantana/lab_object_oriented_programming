@@ -51,11 +51,6 @@ Trinocular::~Trinocular() {
     cout << "\nIn Trinocular destructor...";
 }
 
-// returns the shared pointer for this robot's current position
-shared_ptr<position_array> Trinocular::get_position() {
-    return this->position_pointer;
-}
-
 // prints this robot
 void Trinocular::print_robot() {
     cout << "Trinocular\n";
