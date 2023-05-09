@@ -7,8 +7,8 @@ class Trinocular : public IRobot {
         Trinocular();
         int mine(shared_ptr<field_vector> mine_field);
         ~Trinocular();
+        mutex mtx;
         void print_robot();
-    private:
-        position_array position;
-        shared_ptr<position_array> position_pointer;
+        bool field_is_empty_before_mining(shared_ptr<field_vector> mine_field);
+        bool field_is_empty_after_mining(shared_ptr<field_vector> mine_field);
 };

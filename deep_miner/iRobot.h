@@ -3,6 +3,7 @@
 #include <vector>
 #include <array>
 #include <algorithm>
+#include <mutex>
 #pragma once
 
 using namespace std;
@@ -17,5 +18,7 @@ class IRobot {
     public:
         virtual int mine(shared_ptr<field_vector> mine_field) = 0;
         virtual void print_robot() = 0;
+        virtual bool field_is_empty_before_mining(shared_ptr<field_vector> mine_field) = 0;
+        virtual bool field_is_empty_after_mining(shared_ptr<field_vector> mine_field) = 0;
     private:
 };

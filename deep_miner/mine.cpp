@@ -11,9 +11,12 @@ Mine::Mine() {
 
 }
 
-// fills the mine fields with random values between 1-9
+// fills the mine fields with random values between 1-9 and saves the sum of these values in total_points_in_mine
 void Mine::fill_fields()
-{
+{   
+    this->total_points_in_mine = 0;
+    this->number_total_fields = 0;
+    this->number_empty_fields = 0;
     // iterate through mine positions
     for (int x = 0; x < MAX_LENGTH_MINE; x++)
     {
@@ -21,15 +24,20 @@ void Mine::fill_fields()
         for (int y = 0; y < MAX_LENGTH_MINE; y++)
         {
             // get current field
-            // field_vector current_field = mine_fields[x][y];
             shared_ptr<field_vector> current_field = make_shared<field_vector>();
 
             // fill field with values between 1-9
             for (int depth = 0; depth < MAX_DEPTH_FIELD; depth++)
             {
-                int random = (rand() % 9) + 1; // get random value betweeen 1 and 9
+                // get random value betweeen 1 and 9
+                int random = (rand() % 9) + 1;
+                // add it to the field
                 current_field->push_back(random);
+                // add this value to the total points in this mine
+                this->total_points_in_mine = total_points_in_mine + random;
             }
+            // increase the number of total fields by 1
+            this->number_total_fields++;
 
             // update mine_fields with new values for current field
             mine_fields[x][y] = current_field;
@@ -121,5 +129,67 @@ void Mine::print_visible_fields_with_players_position(shared_ptr<position_array>
         }
 
         cout << row_of_fields_top_values + "\n";
+    }
+}
+
+// returns the total points in this mine's fields
+int Mine::get_total_points() {
+    return this->total_points_in_mine;
+}
+
+// returns true if there is at least one field not empty
+bool Mine::is_empty() {
+    // try to find a field that is not empty
+    for (int x = 0; x < MAX_LENGTH_MINE; x++)
+    {
+        for (int y = 0; y < MAX_LENGTH_MINE; y++)
+        {
+            // get current field
+            shared_ptr<field_vector> current_field = mine_fields[x][y];
+
+            // check if field is not empty (top element != 0)
+            if (*((*current_field).begin()) != 0) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+int Mine::get_remaining_points() {
+    int points = 0;
+    // iterate through mine positions
+    for (int x = 0; x < MAX_LENGTH_MINE; x++)
+    {
+
+        for (int y = 0; y < MAX_LENGTH_MINE; y++)
+        {
+            // get current field
+            shared_ptr<field_vector> current_field = mine_fields[x][y];
+
+            // fill field with values between 1-9
+            for (int depth = 0; depth < (*current_field).size(); depth++)
+            {
+                points = points + (*current_field)[depth];
+            }
+        }
+    }
+    return points;
+}
+
+// returns the number of empty fields in this mine
+int Mine::get_number_empty_fields() {
+    return this->number_empty_fields;
+}
+
+// returns the total number of fields on the mine
+int Mine::get_number_fields() {
+    return this->number_total_fields;
+}
+
+// checks if the mined field is empty and if so, increases the number of empty fields
+void Mine::update_mine_status(shared_ptr<field_vector> mined_field) {
+    if (*((*mined_field).begin()) == 0) {
+        this->number_empty_fields++;
     }
 }

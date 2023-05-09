@@ -1,12 +1,17 @@
 #include "deepMiner.h"
 
 using namespace std;
-
 // creates a new DeepMiner game
 DeepMiner::DeepMiner() {
     set_up_game();
 
     play_game();
+}
+
+// creates a new DeepMiner game as base for Deep Miner Parallel
+DeepMiner::DeepMiner(bool playing_parallel_game) {
+    // create a new mine for the parallel game
+    this->mine = unique_ptr<Mine> (new Mine);
 }
 
 // sets the mine and robots for the player and computer and the possible moves for this game
@@ -22,21 +27,6 @@ void DeepMiner::set_up_game() {
 
     // set a robot for the computer
     set_computer_player();
-}
-
-// sets a robot for the computer to play against the player
-void DeepMiner::set_computer_player() {
-    // get a random choice for the computer's robot
-    int computer_robot_choice = (rand() % NUMBER_ROBOT_OPTIONS) + 1;
-
-    // create robot for computer
-    this->computers_robot = create_robot(computer_robot_choice);
-
-    // create player with this robot for the computer and call it 'OPPONENT'
-    shared_ptr<Player> computer_player = make_shared<Player>(this->computers_robot, mine->MAX_LENGTH_MINE, "OPPONENT");
-
-    // set the computer player to the newly created player
-    this->computer_player = computer_player;
 }
 
 // presents robot options to the player and sets player's robot accordingly.
@@ -67,6 +57,11 @@ void DeepMiner::set_user_players() {
     this->user_player = user_player;
 }
 
+// checks if the player's choice for robot is valid
+bool DeepMiner::is_valid_robot_choice(int choice) {
+    return (choice > 0 && choice <= NUMBER_ROBOT_OPTIONS) ? true : false;
+}
+
 // returns a shared pointer to the new robot created according to the choice
 shared_ptr<IRobot>DeepMiner::create_robot(int choice) {
     shared_ptr<IRobot> shared_robot_pointer;
@@ -91,34 +86,19 @@ shared_ptr<IRobot>DeepMiner::create_robot(int choice) {
     return shared_robot_pointer;
 }
 
-// quits the game by setting game_is_on to false
-void DeepMiner::quit_game(){
-    cout << "\nQuitting game...\n";
-    this->game_is_on = false;
-}
+// sets a robot for the computer to play against the player
+void DeepMiner::set_computer_player() {
+    // get a random choice for the computer's robot
+    int computer_robot_choice = (rand() % NUMBER_ROBOT_OPTIONS) + 1;
 
-// destroys this DeepMiner object
-DeepMiner::~DeepMiner() {
-    cout << "\nIn DeepMiner destructor...\n";
-}
+    // create robot for computer
+    this->computers_robot = create_robot(computer_robot_choice);
 
-// checks if the player's move is valid or if the player asked to quit ('x')
-bool DeepMiner::is_valid_move_or_quit_option(char input) {
-    return (input == 'w' || input == 's' ||  input == 'a' ||  input == 'd' ||  input == 'r' ||  input == 'x') ? true : false;
-}
+    // create player with this robot for the computer and call it 'OPPONENT'
+    shared_ptr<Player> computer_player = make_shared<Player>(this->computers_robot, mine->MAX_LENGTH_MINE, "OPPONENT");
 
-// checks if the player's choice for robot is valid
-bool DeepMiner::is_valid_robot_choice(int choice) {
-    return (choice > 0 && choice <= NUMBER_ROBOT_OPTIONS) ? true : false;
-}
-
-// displays the input options and returns the player's input
-char DeepMiner::get_users_input() {
-    char input;
-    cout << "\n* Choose a direction to move: 'w' (up), 's' (down), 'a' (left), 'd' (right), 'r' (stay) or 'x' to quit the game: \n";
-    cin >> input;
-    cout << "\n Chosen direction: " << input << "\n";
-    return input;
+    // set the computer player to the newly created player
+    this->computer_player = computer_player;
 }
 
 // plays game alternating turns between user and computer
@@ -136,25 +116,10 @@ void DeepMiner::play_game() {
         mine_field(this->user_player);
 
         // move the computer player
-        move_computer_player();
+        move_computer_player(this->computer_player);
 
-        // computer player mines the field
+        // computer player mines the fields
         mine_field(this->computer_player);
-    }
-}
-
-// moves the computer player in a valid direction
-void DeepMiner::move_computer_player() {
-    bool moved_computer = false;
-    char possible_directions[] = {'w', 's', 'a', 'd', 'r'};
-
-    while (!moved_computer) {
-        // get a random direction to move
-        int random_index = rand() % 5;
-        char direction = possible_directions[random_index];
-
-        // check if this direction is valid and if so, move player
-        moved_computer = checked_direction_and_moved_player(direction, this->computer_player);
     }
 }
 
@@ -182,6 +147,20 @@ void DeepMiner::move_user_player() {
         // if input is not valid, ask for a new one
         else cout << "\nInvalid input! Try again:";
     }
+}
+
+// displays the input options and returns the player's input
+char DeepMiner::get_users_input() {
+    char input;
+    cout << "\n* Choose a direction to move: 'w' (up), 's' (down), 'a' (left), 'd' (right), 'r' (stay) or 'x' to quit the game: \n";
+    cin >> input;
+    cout << "\n Chosen direction: " << input << "\n";
+    return input;
+}
+
+// checks if the player's move is valid or if the player asked to quit ('x')
+bool DeepMiner::is_valid_move_or_quit_option(char input) {
+    return (input == 'w' || input == 's' ||  input == 'a' ||  input == 'd' ||  input == 'r' ||  input == 'x') ? true : false;
 }
 
 // returns true if the requested direction is valid in the mine setting and the player moved in this direction.
@@ -238,12 +217,41 @@ bool DeepMiner::checked_direction_and_moved_player(char direction, shared_ptr<Pl
 
 // player mines the current field it's on and wins points
 void DeepMiner::mine_field(shared_ptr<Player> player) {
+    // mtx.lock();
     // get player's position
     shared_ptr<position_array> player_position = player->get_position_pointer();
-
     // get field on that positoin
     shared_ptr<field_vector> field = mine->get_field_pointer(player_position);
-
     // mine field
     player->mine_field_and_print_player(field);
+    // update mine status after mining field
+    mine->update_mine_status(field);
+    // mtx.unlock();
 }
+
+// moves the computer player in a valid direction
+void DeepMiner::move_computer_player(shared_ptr<Player> computer_player) {
+    bool moved_computer = false;
+    char possible_directions[] = {'w', 's', 'a', 'd', 'r'};
+
+    while (!moved_computer) {
+        // get a random direction to move
+        int random_index = rand() % 5;
+        char direction = possible_directions[random_index];
+
+        // check if this direction is valid and if so, move player
+        moved_computer = checked_direction_and_moved_player(direction, computer_player);
+    }
+}
+
+// quits the game by setting game_is_on to false
+void DeepMiner::quit_game(){
+    cout << "\nQuitting game...\n";
+    this->game_is_on = false;
+}
+
+// destroys this DeepMiner object
+DeepMiner::~DeepMiner() {
+    cout << "\nIn DeepMiner destructor...\n";
+}
+

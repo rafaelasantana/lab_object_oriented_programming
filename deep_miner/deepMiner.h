@@ -3,10 +3,8 @@
 #include <vector>
 #include <array>
 #include <memory>
+#include <mutex>
 #include "mine.cpp"
-#include "descendron.cpp"
-#include "trinocular.cpp"
-#include "maxGrinder.cpp"
 #include "player.cpp"
 
 using namespace std;
@@ -14,9 +12,10 @@ using namespace std;
 class DeepMiner {
     public:
         bool game_is_on;
+        mutex mtx;
+        DeepMiner(bool playing_parallel_game);
         DeepMiner();
         ~DeepMiner();
-    private:
         int NUMBER_ROBOT_OPTIONS = 3;
         unique_ptr<Mine> mine;
         shared_ptr<IRobot> players_robot;
@@ -27,7 +26,7 @@ class DeepMiner {
         void set_user_players();
         void set_computer_player();
         void move_user_player();
-        void move_computer_player();
+        void move_computer_player(shared_ptr<Player> computer_player);
         bool is_valid_move_or_quit_option(char input);
         bool is_valid_robot_choice(int choice);
         shared_ptr<IRobot> create_robot(int choice);
@@ -36,5 +35,5 @@ class DeepMiner {
         void mine_field(shared_ptr<Player> player);
         void play_game();
         void quit_game();
-
+    private:
 };
