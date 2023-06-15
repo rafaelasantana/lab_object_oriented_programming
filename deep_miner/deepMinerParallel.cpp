@@ -100,7 +100,7 @@ void DeepMinerParallel::mine_parallel(shared_ptr<Player> player) {
         move_player(player);
         // player mines the field
         mine_field(player);
-        mine->print_visible_fields();
+        // mine->print_visible_fields();
         mtx.unlock();
     }
     // remove player from players vector
