@@ -1,0 +1,41 @@
+# depslib dependency file v1.0
+1688047835 source:c:\users\if22b114\downloads\townmusicians_codeblocks\townmusicians\main.cpp
+	<iostream>
+	"Concert.h"
+
+1688050566 c:\users\if22b114\downloads\townmusicians_codeblocks\townmusicians\include\concert.h
+	<iostream>
+	<vector>
+	<memory>
+	"DogSong.h"
+	"CatSong.h"
+	"RoosterSong.h"
+	"IAnimalSong.h"
+
+1688048632 c:\users\if22b114\downloads\townmusicians_codeblocks\townmusicians\include\dogsong.h
+	"IAnimalSong.h"
+
+1688050721 c:\users\if22b114\downloads\townmusicians_codeblocks\townmusicians\include\ianimalsong.h
+	<vector>
+	<iostream>
+	<memory>
+	<stdexcept>
+
+1688049012 c:\users\if22b114\downloads\townmusicians_codeblocks\townmusicians\include\catsong.h
+	"IAnimalSong.h"
+
+1688048713 c:\users\if22b114\downloads\townmusicians_codeblocks\townmusicians\include\roostersong.h
+	"IAnimalSong.h"
+
+1688049220 source:c:\users\if22b114\downloads\townmusicians_codeblocks\townmusicians\src\catsong.cpp
+	"CatSong.h"
+
+1688050496 source:c:\users\if22b114\downloads\townmusicians_codeblocks\townmusicians\src\roostersong.cpp
+	"RoosterSong.h"
+
+1688050801 source:c:\users\if22b114\downloads\townmusicians_codeblocks\townmusicians\src\concert.cpp
+	"Concert.h"
+
+1688050631 source:c:\users\if22b114\downloads\townmusicians_codeblocks\townmusicians\src\dogsong.cpp
+	"DogSong.h"
+
